@@ -15,13 +15,34 @@ class MainFoldersTableViewController: UITableViewController {
         super.viewDidLoad()
         
         title = "Folders for Task"
-        navigationItem.rightBarButtonItem = editButtonItem
+        
+        
+        let addFolderButton = UIBarButtonItem(
+            image: UIImage(systemName: "folder.badge.plus"),
+            style: .done,
+            target: self,
+            action: #selector(addFolder))
+        let addTaskButton = UIBarButtonItem(
+            image: UIImage(systemName: "square.and.pencil"),
+            style: .done,
+            target: self,
+            action: #selector(addTask))
+            
+        
+        navigationItem.rightBarButtonItem = addTaskButton
+        navigationItem.leftBarButtonItem = addFolderButton
         
         DataManager.shared.createTempData()
         foldersTasks = StorageManager.shared.fetchFoldersTasks()
         
-        print(tabBarController?.selectedViewController)
+        
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
 
     // MARK: - Table view data source
 
@@ -92,9 +113,43 @@ class MainFoldersTableViewController: UITableViewController {
         tasksVC.indexFolder = indexPath.row
     }
     
+    @objc func addFolder() {
+        showAlert()
+    }
+    
+    @objc func addTask() {
+        print("addTask")
+    }
     
     @objc private func addButtonPressed() {
         print("Edit")
     }
 
+}
+
+extension MainFoldersTableViewController {
+    
+    private func showAlert(with folderList: FolderTasks? = nil, completion: (() -> Void)? = nil) {
+        let title = folderList != nil ? "Edit Folder" : "New Folder"
+        let alert = UIAlertController.createAlert(withTitle: title, andMessage: "Please enter the title of the folder")
+        
+        alert.action(with: folderList) { newValue in
+            if let folderList = folderList, let completion = completion {
+  //              let rowIndex = IndexPath(row: foldersTasks.index(of: ), section: 0)
+//                StorageManager.shared.editFolder(folder: folderList, indexFolder: 1, newTitle: newValue)
+//                completion()
+            } else {
+                self.save(folderTitle: newValue)
+            }
+        }
+        present(alert, animated: true)
+    }
+    
+    private func save(folderTitle: String) {
+        let folderTask = FolderTasks()
+        folderTask.title = folderTitle
+        foldersTasks.append(folderTask)
+        StorageManager.shared.save(at: folderTask)
+        tableView.reloadData()
+    }
 }

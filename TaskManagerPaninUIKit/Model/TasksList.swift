@@ -12,10 +12,10 @@ import Foundation
 class FolderTasks: Codable {
     var date = Date()
     var title = ""
-    var tasks = [TaskList()]
+    var tasks = [TaskList]()
 }
 
-struct TaskList: Codable {
+class TaskList: Codable {
     var date = Date()
     var title = ""
     var note = ""

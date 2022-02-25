@@ -16,14 +16,16 @@ class DataManager {
         
         if !UserDefaults.standard.bool(forKey: "Check") {
             
+            let task = TaskList()
+            task.title = "My first Task"
+            task.note = "Hi! Welcome to the team!"
+            
+            
             let folder = FolderTasks()
             folder.date = Date()
             folder.title = "For example"
-            folder.tasks = [
-                TaskList(date: Date(), title: "Task 1", note: "Hello, User!!"),
-                TaskList(date: Date(), title: "Task 2", note: "Input First Task")
-            ]
-          
+            folder.tasks = [task]
+                
             UserDefaults.standard.set(true, forKey: "Check")
             UserDefaults.standard.removeObject(forKey: "Tasks")
             StorageManager.shared.save(at: folder)

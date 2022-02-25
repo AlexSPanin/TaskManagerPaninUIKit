@@ -30,6 +30,12 @@ class StorageManager {
         return foldersTasks
     }
     
+    func editFolder(folder: FolderTasks, indexFolder: Int, newTitle: String) {
+        
+        
+    }
+    
+    
     func done(folder: FolderTasks, indexFolder: Int) {
         var foldersTasks = fetchFoldersTasks()
        
