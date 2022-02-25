@@ -16,7 +16,7 @@ extension UIAlertController {
         
     func action(with foldersList: FolderTasks?, completion: @escaping (String) -> Void) {
         
-        let doneButton = foldersList == nil ? "Save" : "Update"
+        let doneButton = foldersList == nil ? "Save" : "Done"
                 
         let saveAction = UIAlertAction(title: doneButton, style: .default) { _ in
             guard let newValue = self.textFields?.first?.text else { return }

@@ -31,7 +31,12 @@ class StorageManager {
     }
     
     func editFolder(folder: FolderTasks, indexFolder: Int, newTitle: String) {
+        let foldersTasks = fetchFoldersTasks()
+        foldersTasks[indexFolder].title = newTitle
         
+        guard let data = try? JSONEncoder().encode(foldersTasks) else { return }
+        userDefaults.set(data, forKey: tasksKey)
+
         
     }
     

@@ -11,24 +11,22 @@ class MainFoldersTableViewController: UITableViewController {
     
     var foldersTasks = [FolderTasks()]
     
+private let addFolderButton = UIBarButtonItem(
+        image: UIImage(systemName: "folder.badge.plus"),
+        style: .done,
+        target: self,
+        action: #selector(addFolder))
+    
+private let addTaskButton = UIBarButtonItem(
+        image: UIImage(systemName: "square.and.pencil"),
+        style: .done,
+        target: self,
+        action: #selector(addTask))
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Folders for Task"
-        
-        
-        let addFolderButton = UIBarButtonItem(
-            image: UIImage(systemName: "folder.badge.plus"),
-            style: .done,
-            target: self,
-            action: #selector(addFolder))
-        let addTaskButton = UIBarButtonItem(
-            image: UIImage(systemName: "square.and.pencil"),
-            style: .done,
-            target: self,
-            action: #selector(addTask))
-            
-        
         navigationItem.rightBarButtonItem = addTaskButton
         navigationItem.leftBarButtonItem = addFolderButton
         
@@ -52,28 +50,30 @@ class MainFoldersTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "foldersRows", for: indexPath)
-        var content = cell.defaultContentConfiguration()
         let folder = foldersTasks[indexPath.row]
         let countTasks = folder.tasks.count
+        
+        var content = cell.defaultContentConfiguration()
         content.text = folder.title
         content.secondaryText = String("\(countTasks)")
         cell.contentConfiguration = content
         return cell
     }
 
+    
+    
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let folderTasks = foldersTasks[indexPath.row]
-        
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
+            
+            self.foldersTasks.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .fade)
             StorageManager.shared.deleteFolder(indexFolder: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
         }
         
         let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, isDone in
-            print("\(folderTasks.title)")
-//            {
-//                self.tableView.reloadRows(at: [indexPath], with: .automatic)
-//            }
+            print("Index add", indexPath)
+            self.showAlert(with: folderTasks, index: indexPath.row)
             isDone(true)
         }
         
@@ -129,15 +129,22 @@ class MainFoldersTableViewController: UITableViewController {
 
 extension MainFoldersTableViewController {
     
-    private func showAlert(with folderList: FolderTasks? = nil, completion: (() -> Void)? = nil) {
-        let title = folderList != nil ? "Edit Folder" : "New Folder"
+    private func showAlert(with folderList: FolderTasks? = nil, index: Int? = nil) {
+        let title = folderList != nil ? "Edit Folder Name" : "New Folder"
         let alert = UIAlertController.createAlert(withTitle: title, andMessage: "Please enter the title of the folder")
         
         alert.action(with: folderList) { newValue in
-            if let folderList = folderList, let completion = completion {
-  //              let rowIndex = IndexPath(row: foldersTasks.index(of: ), section: 0)
-//                StorageManager.shared.editFolder(folder: folderList, indexFolder: 1, newTitle: newValue)
-//                completion()
+            if let folderList = folderList, let index = index {
+                
+                self.foldersTasks[index].title = newValue
+                StorageManager.shared.editFolder(
+                    folder: folderList,
+                    indexFolder: index,
+                    newTitle: newValue
+                )
+                self.foldersTasks[index].title = newValue
+                
+                self.tableView.reloadData()
             } else {
                 self.save(folderTitle: newValue)
             }
@@ -148,8 +155,10 @@ extension MainFoldersTableViewController {
     private func save(folderTitle: String) {
         let folderTask = FolderTasks()
         folderTask.title = folderTitle
+        
         foldersTasks.append(folderTask)
         StorageManager.shared.save(at: folderTask)
+        
         tableView.reloadData()
     }
 }
