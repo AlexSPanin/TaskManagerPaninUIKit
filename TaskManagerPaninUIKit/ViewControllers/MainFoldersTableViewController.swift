@@ -9,76 +9,92 @@ import UIKit
 
 class MainFoldersTableViewController: UITableViewController {
     
-    var foldersTasks: [FolderTasks] = []
-
+    var foldersTasks = [FolderTasks()]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.register(FoldersTableViewCell.self, forCellReuseIdentifier: "foldersRows")
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        title = "Folders for Task"
+        navigationItem.rightBarButtonItem = editButtonItem
+        
+        DataManager.shared.createTempData()
+        foldersTasks = StorageManager.shared.fetchFoldersTasks()
+        
+        print(tabBarController?.selectedViewController)
     }
 
     // MARK: - Table view data source
-
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         foldersTasks.count
     }
 
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "foldersRows", for: indexPath) as! FoldersTableViewCell
-        cell.configuration(foldersTasks[indexPath.row])
+        let cell = tableView.dequeueReusableCell(withIdentifier: "foldersRows", for: indexPath)
+        var content = cell.defaultContentConfiguration()
+        let folder = foldersTasks[indexPath.row]
+        let countTasks = folder.tasks.count
+        content.text = folder.title
+        content.secondaryText = String("\(countTasks)")
+        cell.contentConfiguration = content
         return cell
     }
 
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let folderTasks = foldersTasks[indexPath.row]
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
+            StorageManager.shared.deleteFolder(indexFolder: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+        
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, isDone in
+            print("\(folderTasks.title)")
+//            {
+//                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+//            }
+            isDone(true)
+        }
+        
+        editAction.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+        return UISwipeActionsConfiguration(actions: [editAction, deleteAction])
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        .none
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    
+    override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        false
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+    
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let currentFolder = foldersTasks.remove(at: sourceIndexPath.row)
+        foldersTasks.insert(currentFolder, at: destinationIndexPath.row)
     }
-    */
-
-    /*
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    
+    
+    
+    
+    
+    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        guard let indexPath = tableView.indexPathForSelectedRow else { return }
+        guard let tasksVC = segue.destination as? TasksTableViewController else { return }
+        let folder = foldersTasks[indexPath.row]
+        tasksVC.folderTasks = folder
+        tasksVC.indexFolder = indexPath.row
     }
-    */
+    
+    
+    @objc private func addButtonPressed() {
+        print("Edit")
+    }
 
 }

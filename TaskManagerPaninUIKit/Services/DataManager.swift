@@ -13,18 +13,20 @@ class DataManager {
     private init() {}
     
     func createTempData() {
-        if !UserDefaults.standard.bool(forKey: "Chek") {
+        
+        if !UserDefaults.standard.bool(forKey: "Check") {
             
             let folder = FolderTasks()
+            folder.date = Date()
             folder.title = "For example"
-            
-            let task = TaskList()
-            task.title = "Task1"
-            task.note = "Hello, User!!"
-            
-            folder.task.append(task)
-
+            folder.tasks = [
+                TaskList(date: Date(), title: "Task 1", note: "Hello, User!!"),
+                TaskList(date: Date(), title: "Task 2", note: "Input First Task")
+            ]
+          
             UserDefaults.standard.set(true, forKey: "Check")
+            UserDefaults.standard.removeObject(forKey: "Tasks")
+            StorageManager.shared.save(at: folder)
         }
     }
 }

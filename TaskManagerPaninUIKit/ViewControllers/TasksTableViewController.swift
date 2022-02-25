@@ -9,16 +9,14 @@ import UIKit
 
 class TasksTableViewController: UITableViewController {
     
-    var tasks: [TaskList] = []
+    var folderTasks: FolderTasks?
+    var indexFolder: Int?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = folderTasks?.title
+        navigationItem.rightBarButtonItem = editButtonItem
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     // MARK: - Table view data source
@@ -26,18 +24,65 @@ class TasksTableViewController: UITableViewController {
     
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        tasks.count
+        folderTasks?.tasks.count ?? 0
     }
 
    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tasksRows", for: indexPath)
 
-        // Configure the cell...
-
+        var content = cell.defaultContentConfiguration()
+        let tasks = folderTasks?.tasks[indexPath.row]
+        content.text = tasks?.title
+        content.secondaryText = tasks?.note
+        cell.contentConfiguration = content
         return cell
     }
 
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let folderTasks = folderTasks?.tasks[indexPath.row]
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
+            guard let indexFolder = self.indexFolder else { return }
+            StorageManager.shared.deleteTask(indexFolder: indexFolder, indexTask: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+        
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, isDone in
+            print("\(String(describing: folderTasks?.title))")
+
+            isDone(true)
+        }
+        
+        editAction.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+  
+        
+        return UISwipeActionsConfiguration(actions: [editAction, deleteAction])
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        .none
+    }
+    
+    override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        false
+    }
+    
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        guard let folderTasks = folderTasks else { return }
+        guard let indexFolder = indexFolder else { return }
+
+        let currentFolder = folderTasks.tasks.remove(at: sourceIndexPath.row)
+        folderTasks.tasks.insert(currentFolder, at: destinationIndexPath.row)
+        
+        StorageManager.shared.done(folder: folderTasks, indexFolder: indexFolder)
+    }
+ 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 
     /*
     // Override to support conditional editing of the table view.

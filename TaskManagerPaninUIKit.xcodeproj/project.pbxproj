@@ -7,23 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E2B9A11F27C8CB4A007B9F63 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B9A11E27C8CB4A007B9F63 /* AlertController.swift */; };
 		E2CE6D6327C77DC900373B7D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D6227C77DC900373B7D /* AppDelegate.swift */; };
 		E2CE6D6527C77DC900373B7D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D6427C77DC900373B7D /* SceneDelegate.swift */; };
 		E2CE6D6A27C77DC900373B7D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2CE6D6827C77DC900373B7D /* Main.storyboard */; };
 		E2CE6D6C27C77DCA00373B7D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2CE6D6B27C77DCA00373B7D /* Assets.xcassets */; };
 		E2CE6D6F27C77DCA00373B7D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2CE6D6D27C77DCA00373B7D /* LaunchScreen.storyboard */; };
-		E2CE6D7D27C77EDF00373B7D /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D7C27C77EDF00373B7D /* TaskTableViewCell.swift */; };
-		E2CE6D8127C77F6000373B7D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D8027C77F6000373B7D /* MainViewController.swift */; };
 		E2CE6D8427C782F800373B7D /* TasksList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D8327C782F800373B7D /* TasksList.swift */; };
 		E2CE6D8627C7BFB800373B7D /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D8527C7BFB800373B7D /* DataManager.swift */; };
 		E2CE6D8827C7C55100373B7D /* MainFoldersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D8727C7C55100373B7D /* MainFoldersTableViewController.swift */; };
-		E2CE6D8A27C7C5E700373B7D /* FoldersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D8927C7C5E700373B7D /* FoldersTableViewCell.swift */; };
 		E2CE6D8C27C7C61400373B7D /* TasksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D8B27C7C61400373B7D /* TasksTableViewController.swift */; };
-		E2CE6D8E27C7D81100373B7D /* AddFoldersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D8D27C7D81100373B7D /* AddFoldersViewController.swift */; };
 		E2CE6D9027C7D82800373B7D /* AddTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D8F27C7D82800373B7D /* AddTasksViewController.swift */; };
+		E2CE6D9227C7E81000373B7D /* StoradgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D9127C7E81000373B7D /* StoradgeManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E2B9A11E27C8CB4A007B9F63 /* AlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		E2CE6D5F27C77DC900373B7D /* TaskManagerPaninUIKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskManagerPaninUIKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2CE6D6227C77DC900373B7D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E2CE6D6427C77DC900373B7D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -31,15 +30,12 @@
 		E2CE6D6B27C77DCA00373B7D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E2CE6D6E27C77DCA00373B7D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E2CE6D7027C77DCA00373B7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E2CE6D7C27C77EDF00373B7D /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
-		E2CE6D8027C77F6000373B7D /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		E2CE6D8327C782F800373B7D /* TasksList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksList.swift; sourceTree = "<group>"; };
 		E2CE6D8527C7BFB800373B7D /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		E2CE6D8727C7C55100373B7D /* MainFoldersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFoldersTableViewController.swift; sourceTree = "<group>"; };
-		E2CE6D8927C7C5E700373B7D /* FoldersTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldersTableViewCell.swift; sourceTree = "<group>"; };
 		E2CE6D8B27C7C61400373B7D /* TasksTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTableViewController.swift; sourceTree = "<group>"; };
-		E2CE6D8D27C7D81100373B7D /* AddFoldersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFoldersViewController.swift; sourceTree = "<group>"; };
 		E2CE6D8F27C7D82800373B7D /* AddTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTasksViewController.swift; sourceTree = "<group>"; };
+		E2CE6D9127C7E81000373B7D /* StoradgeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoradgeManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,7 +70,6 @@
 			children = (
 				E2CE6D8227C782DB00373B7D /* Model */,
 				E2CE6D7627C77DD700373B7D /* ViewControllers */,
-				E2CE6D7727C77DE500373B7D /* View */,
 				E2CE6D7827C77DEF00373B7D /* Services */,
 				E2CE6D7B27C77E4600373B7D /* SupportingFiles */,
 				E2CE6D7A27C77E1600373B7D /* Storiboards */,
@@ -88,26 +83,17 @@
 			children = (
 				E2CE6D8727C7C55100373B7D /* MainFoldersTableViewController.swift */,
 				E2CE6D8B27C7C61400373B7D /* TasksTableViewController.swift */,
-				E2CE6D8027C77F6000373B7D /* MainViewController.swift */,
-				E2CE6D8D27C7D81100373B7D /* AddFoldersViewController.swift */,
 				E2CE6D8F27C7D82800373B7D /* AddTasksViewController.swift */,
+				E2B9A11E27C8CB4A007B9F63 /* AlertController.swift */,
 			);
 			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		E2CE6D7727C77DE500373B7D /* View */ = {
-			isa = PBXGroup;
-			children = (
-				E2CE6D8927C7C5E700373B7D /* FoldersTableViewCell.swift */,
-				E2CE6D7C27C77EDF00373B7D /* TaskTableViewCell.swift */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		E2CE6D7827C77DEF00373B7D /* Services */ = {
 			isa = PBXGroup;
 			children = (
 				E2CE6D8527C7BFB800373B7D /* DataManager.swift */,
+				E2CE6D9127C7E81000373B7D /* StoradgeManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -219,15 +205,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E2CE6D8C27C7C61400373B7D /* TasksTableViewController.swift in Sources */,
-				E2CE6D7D27C77EDF00373B7D /* TaskTableViewCell.swift in Sources */,
-				E2CE6D8E27C7D81100373B7D /* AddFoldersViewController.swift in Sources */,
 				E2CE6D8827C7C55100373B7D /* MainFoldersTableViewController.swift in Sources */,
 				E2CE6D8627C7BFB800373B7D /* DataManager.swift in Sources */,
 				E2CE6D6327C77DC900373B7D /* AppDelegate.swift in Sources */,
 				E2CE6D8427C782F800373B7D /* TasksList.swift in Sources */,
+				E2B9A11F27C8CB4A007B9F63 /* AlertController.swift in Sources */,
 				E2CE6D6527C77DC900373B7D /* SceneDelegate.swift in Sources */,
-				E2CE6D8127C77F6000373B7D /* MainViewController.swift in Sources */,
-				E2CE6D8A27C7C5E700373B7D /* FoldersTableViewCell.swift in Sources */,
+				E2CE6D9227C7E81000373B7D /* StoradgeManager.swift in Sources */,
 				E2CE6D9027C7D82800373B7D /* AddTasksViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

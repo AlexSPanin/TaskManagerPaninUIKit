@@ -7,15 +7,17 @@
 
 import Foundation
 
-class FolderTasks {
+
+
+class FolderTasks: Codable {
     var date = Date()
     var title = ""
-    var task = [TaskList()]
+    var tasks = [TaskList()]
 }
 
-
-class TaskList {
+struct TaskList: Codable {
     var date = Date()
     var title = ""
     var note = ""
 }
+
