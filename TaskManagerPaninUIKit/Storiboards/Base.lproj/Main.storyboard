@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="foldersRows" textLabel="Dp2-30-bgC" detailTextLabel="Tm7-hr-2ae" style="IBUITableViewCellStyleValue1" id="WaE-6y-lnv" customClass="FoldersTableViewCell" customModule="TaskManagerPaninUIKit" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="foldersRows" textLabel="Dp2-30-bgC" detailTextLabel="Tm7-hr-2ae" style="IBUITableViewCellStyleValue1" id="WaE-6y-lnv">
                                 <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WaE-6y-lnv" id="v1p-Jp-keJ">
@@ -65,7 +65,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="tasksRows" textLabel="zJR-a5-7jX" detailTextLabel="SLp-vr-LRp" style="IBUITableViewCellStyleSubtitle" id="LCk-u6-wwn" customClass="TaskTableViewCell" customModule="TaskManagerPaninUIKit" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="tasksRows" textLabel="zJR-a5-7jX" detailTextLabel="SLp-vr-LRp" style="IBUITableViewCellStyleSubtitle" id="LCk-u6-wwn">
                                 <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LCk-u6-wwn" id="X6v-J7-5zB">
@@ -108,7 +108,7 @@
         <!--Add Tasks View Controller-->
         <scene sceneID="jdc-mI-oHF">
             <objects>
-                <viewController id="pA8-os-c24" customClass="AddTasksViewController" customModule="TaskManagerPaninUIKit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddTasksViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pA8-os-c24" customClass="AddTasksViewController" customModule="TaskManagerPaninUIKit" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="d0f-ey-Tee">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

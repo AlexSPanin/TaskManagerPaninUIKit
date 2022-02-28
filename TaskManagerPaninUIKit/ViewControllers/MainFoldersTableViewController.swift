@@ -63,6 +63,7 @@ class MainFoldersTableViewController: UITableViewController {
         let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, isDone in
             print("Index add", indexPath)
             self.showAlert(with: folderTasks, index: indexPath.row)
+            
             isDone(true)
         }
         
@@ -97,8 +98,10 @@ class MainFoldersTableViewController: UITableViewController {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         guard let indexPath = tableView.indexPathForSelectedRow else { return }
         guard let tasksVC = segue.destination as? TasksTableViewController else { return }
+        setActiveFolder(indexPath.row)
         let folder = foldersTasks[indexPath.row]
         tasksVC.folderTasks = folder
         tasksVC.indexFolder = indexPath.row
@@ -109,18 +112,38 @@ class MainFoldersTableViewController: UITableViewController {
     }
     
     @objc func addTask() {
-        print("addTask")
-    }
-
-    private func setActiveFolder() {
         
-        let foldersTasks = foldersTasks
+        if foldersTasks.isEmpty { showAlert() }
+        guard let index = foldersTasks.firstIndex( where: \.isActive) else { return }
+        let folderTasks = foldersTasks[index]
+        let task = TaskList()
+        
+        let stuyryboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let addTaskVC = stuyryboard.instantiateViewController(withIdentifier: "AddTasksViewController") as? AddTasksViewController else { return }
+        addTaskVC.titleFolder = folderTasks.title
+        addTaskVC.task = task
+        present(addTaskVC, animated: true)
+        
+    }
+    
+    func printActiveFolders() {
         for foldersTask in foldersTasks {
-            foldersTask.isActive = false
+            if foldersTask.isActive { print(foldersTasks.count,foldersTask.title, foldersTask.isActive)}
         }
-        guard let indexPath = tableView.indexPathForSelectedRow else { return }
-        foldersTasks[indexPath.row].isActive = true
+    }
+    
+    private func setActiveFolder(_ index: Int) {
+        let foldersTasks = foldersTasks
+        if foldersTasks.contains(where: { folder in folder.isActive }) {
+            for foldersTask in foldersTasks {
+                foldersTask.isActive = false
+            }
+            foldersTasks[index].isActive = true
+        } else {
+            foldersTasks[0].isActive = true
+        }
         StorageManager.shared.save(at: foldersTasks)
+        self.printActiveFolders()
     }
     
     
@@ -181,7 +204,7 @@ extension MainFoldersTableViewController {
                     newTitle: newValue
                 )
                 self.foldersTasks[index].title = newValue
-                
+                self.setActiveFolder(index)
                 self.tableView.reloadData()
             } else {
                 self.save(folderTitle: newValue)
@@ -196,7 +219,7 @@ extension MainFoldersTableViewController {
         
         foldersTasks.append(folderTask)
         StorageManager.shared.addFolder(at: folderTask)
-        
+        setActiveFolder(foldersTasks.count - 1)
         tableView.reloadData()
     }
 }
