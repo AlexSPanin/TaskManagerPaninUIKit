@@ -15,7 +15,24 @@ class TasksTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = folderTasks?.title
-        navigationItem.rightBarButtonItem = editButtonItem
+        tableView.rowHeight = 80
+        let addTaskButton = UIBarButtonItem(
+                image: UIImage(systemName: "square.and.pencil"),
+                style: .done,
+                target: self,
+                action: #selector(addTask))
+        navigationItem.rightBarButtonItem = addTaskButton
+        
+        
+        
+        
+        
+        
+        
+        
+//        navigationItem.rightBarButtonItem = editButtonItem
+//        let button = navigationItem.rightBarButtonItem
+//        button?.tintColor = .yellow
 
     }
 
@@ -77,10 +94,11 @@ class TasksTableViewController: UITableViewController {
         let currentFolder = folderTasks.tasks.remove(at: sourceIndexPath.row)
         folderTasks.tasks.insert(currentFolder, at: destinationIndexPath.row)
         
-        StorageManager.shared.done(folder: folderTasks, indexFolder: indexFolder)
+   //     StorageManager.shared.moveRowFolder(folder: folderTasks, indexFolder: indexFolder)
     }
  
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "editTask", sender: indexPath.row)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
@@ -119,14 +137,21 @@ class TasksTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        guard let indexPath = tableView.indexPathForSelectedRow else { return }
+        guard let taskVC = segue.destination as? AddTasksViewController else { return }
+        let task = folderTasks?.tasks[indexPath.row]
+        taskVC.task = task
+        taskVC.titleFolder = folderTasks?.title
     }
-    */
+    
+    @objc func addTask() {
+        print("addTask")
+    }
+
 
 }

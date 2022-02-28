@@ -15,7 +15,13 @@ class StorageManager {
     
     private init() {}
     
-    func save(at item: FolderTasks) {
+    func save(at items: [FolderTasks]) {
+        let foldersTasks = items
+        guard let data = try? JSONEncoder().encode(foldersTasks) else { return }
+        userDefaults.set(data, forKey: tasksKey)
+    }
+    
+    func addFolder(at item: FolderTasks) {
         var foldersTasks = fetchFoldersTasks()
         foldersTasks.append(item)
         
@@ -41,11 +47,11 @@ class StorageManager {
     }
     
     
-    func done(folder: FolderTasks, indexFolder: Int) {
+    func moveRowFolder(folder: FolderTasks, sourceIndex: Int, destinationIndex: Int) {
         var foldersTasks = fetchFoldersTasks()
        
-        foldersTasks.remove(at: indexFolder)
-        foldersTasks.insert(folder, at: indexFolder)
+        foldersTasks.remove(at: sourceIndex)
+        foldersTasks.insert(folder, at: destinationIndex)
         
         guard let data = try? JSONEncoder().encode(foldersTasks) else { return }
         userDefaults.set(data, forKey: tasksKey)

@@ -11,24 +11,13 @@ class MainFoldersTableViewController: UITableViewController {
     
     var foldersTasks = [FolderTasks()]
     
-private let addFolderButton = UIBarButtonItem(
-        image: UIImage(systemName: "folder.badge.plus"),
-        style: .done,
-        target: self,
-        action: #selector(addFolder))
-    
-private let addTaskButton = UIBarButtonItem(
-        image: UIImage(systemName: "square.and.pencil"),
-        style: .done,
-        target: self,
-        action: #selector(addTask))
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+      
+        setupNavigationBar()
         
-        title = "Folders for Task"
-        navigationItem.rightBarButtonItem = addTaskButton
-        navigationItem.leftBarButtonItem = addFolderButton
+        tableView.rowHeight = 50
+        
         
         DataManager.shared.createTempData()
         foldersTasks = StorageManager.shared.fetchFoldersTasks()
@@ -80,6 +69,7 @@ private let addTaskButton = UIBarButtonItem(
         editAction.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
         return UISwipeActionsConfiguration(actions: [editAction, deleteAction])
     }
+    
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         .none
     }
@@ -91,6 +81,7 @@ private let addTaskButton = UIBarButtonItem(
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let currentFolder = foldersTasks.remove(at: sourceIndexPath.row)
         foldersTasks.insert(currentFolder, at: destinationIndexPath.row)
+        StorageManager.shared.save(at: foldersTasks)
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -120,12 +111,59 @@ private let addTaskButton = UIBarButtonItem(
     @objc func addTask() {
         print("addTask")
     }
-    
-    @objc private func addButtonPressed() {
-        print("Edit")
-    }
 
+    private func setActiveFolder() {
+        
+        let foldersTasks = foldersTasks
+        for foldersTask in foldersTasks {
+            foldersTask.isActive = false
+        }
+        guard let indexPath = tableView.indexPathForSelectedRow else { return }
+        foldersTasks[indexPath.row].isActive = true
+        StorageManager.shared.save(at: foldersTasks)
+    }
+    
+    
 }
+// MARK: - Create Bar Buttons
+
+extension MainFoldersTableViewController {
+    
+    private func setupNavigationBar() {
+        guard let navigation = navigationController else { return }
+        
+        let addFolderButton = UIBarButtonItem(
+                image: UIImage(systemName: "folder.badge.plus"),
+                style: .done,
+                target: self,
+                action: #selector(addFolder))
+        
+        let addTaskButton = UIBarButtonItem(
+                image: UIImage(systemName: "square.and.pencil"),
+                style: .done,
+                target: self,
+                action: #selector(addTask))
+        
+        title = "Folders"
+       navigation.navigationBar.prefersLargeTitles = true
+        
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.configureWithOpaqueBackground()
+        navBarAppearance.titleTextAttributes = [.foregroundColor: #colorLiteral(red: 0.5058823824, green: 0.3372549117, blue: 0.06666667014, alpha: 1)]
+        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: #colorLiteral(red: 0.5058823824, green: 0.3372549117, blue: 0.06666667014, alpha: 1)]
+        navBarAppearance.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
+        navigation.navigationBar.standardAppearance = navBarAppearance
+        navigation.navigationBar.scrollEdgeAppearance = navBarAppearance
+    
+        navigationItem.rightBarButtonItem = addTaskButton
+        navigationItem.leftBarButtonItem = addFolderButton
+        navigation.navigationBar.tintColor = #colorLiteral(red: 0.5058823824, green: 0.3372549117, blue: 0.06666667014, alpha: 1)
+    
+    }
+    
+}
+
+// MARK: -  Show Alert for add Folders
 
 extension MainFoldersTableViewController {
     
@@ -157,7 +195,7 @@ extension MainFoldersTableViewController {
         folderTask.title = folderTitle
         
         foldersTasks.append(folderTask)
-        StorageManager.shared.save(at: folderTask)
+        StorageManager.shared.addFolder(at: folderTask)
         
         tableView.reloadData()
     }

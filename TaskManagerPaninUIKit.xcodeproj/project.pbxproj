@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E256900B27CBE3B600873471 /* ExtentionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E256900A27CBE3B600873471 /* ExtentionView.swift */; };
 		E2B9A11F27C8CB4A007B9F63 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B9A11E27C8CB4A007B9F63 /* AlertController.swift */; };
 		E2CE6D6327C77DC900373B7D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D6227C77DC900373B7D /* AppDelegate.swift */; };
 		E2CE6D6527C77DC900373B7D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D6427C77DC900373B7D /* SceneDelegate.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E256900A27CBE3B600873471 /* ExtentionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtentionView.swift; sourceTree = "<group>"; };
 		E2B9A11E27C8CB4A007B9F63 /* AlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		E2CE6D5F27C77DC900373B7D /* TaskManagerPaninUIKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskManagerPaninUIKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2CE6D6227C77DC900373B7D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -49,6 +51,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E256900927CBE38B00873471 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E256900A27CBE3B600873471 /* ExtentionView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		E2CE6D5627C77DC900373B7D = {
 			isa = PBXGroup;
 			children = (
@@ -68,6 +78,7 @@
 		E2CE6D6127C77DC900373B7D /* TaskManagerPaninUIKit */ = {
 			isa = PBXGroup;
 			children = (
+				E256900927CBE38B00873471 /* View */,
 				E2CE6D8227C782DB00373B7D /* Model */,
 				E2CE6D7627C77DD700373B7D /* ViewControllers */,
 				E2CE6D7827C77DEF00373B7D /* Services */,
@@ -207,6 +218,7 @@
 				E2CE6D8C27C7C61400373B7D /* TasksTableViewController.swift in Sources */,
 				E2CE6D8827C7C55100373B7D /* MainFoldersTableViewController.swift in Sources */,
 				E2CE6D8627C7BFB800373B7D /* DataManager.swift in Sources */,
+				E256900B27CBE3B600873471 /* ExtentionView.swift in Sources */,
 				E2CE6D6327C77DC900373B7D /* AppDelegate.swift in Sources */,
 				E2CE6D8427C782F800373B7D /* TasksList.swift in Sources */,
 				E2B9A11F27C8CB4A007B9F63 /* AlertController.swift in Sources */,

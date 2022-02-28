@@ -54,7 +54,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zi2-5l-XyI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2610.144927536232" y="-28.125"/>
+            <point key="canvasLocation" x="2438" y="-28"/>
         </scene>
         <!--Item-->
         <scene sceneID="qrk-1l-0zM">
@@ -97,17 +97,20 @@
                     </tableView>
                     <tabBarItem key="tabBarItem" tag="2" title="Item" id="xwp-rk-mI1"/>
                     <navigationItem key="navigationItem" id="zmc-Rw-hUQ"/>
+                    <connections>
+                        <segue destination="pA8-os-c24" kind="presentation" identifier="editTask" id="D2r-h9-bhK"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fri-sw-N4M" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1661" y="733"/>
+            <point key="canvasLocation" x="3139" y="-28"/>
         </scene>
         <!--Add Tasks View Controller-->
         <scene sceneID="jdc-mI-oHF">
             <objects>
                 <viewController id="pA8-os-c24" customClass="AddTasksViewController" customModule="TaskManagerPaninUIKit" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="d0f-ey-Tee">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="BUQ-tN-EwI"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -117,7 +120,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7O8-xf-L9O" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="912" y="733"/>
+            <point key="canvasLocation" x="3858" y="-28"/>
         </scene>
         <!--Item-->
         <scene sceneID="kWZ-eB-SWI">
