@@ -11,17 +11,21 @@ class MainFoldersTableViewController: UITableViewController {
     
     var foldersTasks = [FolderTasks()]
     
+    var isChange: Bool = false {
+        didSet {
+            self.tableView.reloadData()
+            isChange = false
+            print("Didset TaskTable")
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
       
         setupNavigationBar()
-        
-        tableView.rowHeight = 50
-        
-        
+        tableView.rowHeight = 45
         DataManager.shared.createTempData()
         foldersTasks = StorageManager.shared.fetchFoldersTasks()
-        
         
     }
     
@@ -42,9 +46,15 @@ class MainFoldersTableViewController: UITableViewController {
         let folder = foldersTasks[indexPath.row]
         let countTasks = folder.tasks.count
         
+        print(countTasks)
+        
         var content = cell.defaultContentConfiguration()
         content.text = folder.title
+        content.textProperties.lineBreakMode = .byTruncatingMiddle
+        content.textProperties.alignment = .natural
         content.secondaryText = String("\(countTasks)")
+        content.secondaryTextProperties.color = #colorLiteral(red: 0.5058823824, green: 0.3372549117, blue: 0.06666667014, alpha: 1)
+        content.secondaryTextProperties.alignment = .natural
         cell.contentConfiguration = content
         return cell
     }
@@ -61,7 +71,6 @@ class MainFoldersTableViewController: UITableViewController {
         }
         
         let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, isDone in
-            print("Index add", indexPath)
             self.showAlert(with: folderTasks, index: indexPath.row)
             
             isDone(true)
@@ -89,12 +98,6 @@ class MainFoldersTableViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    
-    
-    
-    
-    
-    
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -102,8 +105,7 @@ class MainFoldersTableViewController: UITableViewController {
         guard let indexPath = tableView.indexPathForSelectedRow else { return }
         guard let tasksVC = segue.destination as? TasksTableViewController else { return }
         setActiveFolder(indexPath.row)
-        let folder = foldersTasks[indexPath.row]
-        tasksVC.folderTasks = folder
+        tasksVC.foldersTasks = foldersTasks
         tasksVC.indexFolder = indexPath.row
     }
     
@@ -114,14 +116,18 @@ class MainFoldersTableViewController: UITableViewController {
     @objc func addTask() {
         
         if foldersTasks.isEmpty { showAlert() }
-        guard let index = foldersTasks.firstIndex( where: \.isActive) else { return }
-        let folderTasks = foldersTasks[index]
+        guard let indexFolder = foldersTasks.firstIndex( where: \.isActive) else { return }
         let task = TaskList()
         
         let stuyryboard = UIStoryboard(name: "Main", bundle: nil)
         guard let addTaskVC = stuyryboard.instantiateViewController(withIdentifier: "AddTasksViewController") as? AddTasksViewController else { return }
-        addTaskVC.titleFolder = folderTasks.title
-        addTaskVC.task = task
+        addTaskVC.delegate = self
+        addTaskVC.mode = .edit
+        addTaskVC.indexFolder = indexFolder
+        addTaskVC.indexTask = foldersTasks[indexFolder].tasks.count
+        foldersTasks[indexFolder].tasks.append(task)
+        addTaskVC.foldersTasks = foldersTasks
+        
         present(addTaskVC, animated: true)
         
     }
@@ -199,7 +205,7 @@ extension MainFoldersTableViewController {
                 
                 self.foldersTasks[index].title = newValue
                 StorageManager.shared.editFolder(
-                    folder: folderList,
+                    folderTasks: folderList,
                     indexFolder: index,
                     newTitle: newValue
                 )
@@ -222,4 +228,14 @@ extension MainFoldersTableViewController {
         setActiveFolder(foldersTasks.count - 1)
         tableView.reloadData()
     }
+}
+
+extension MainFoldersTableViewController: TasksTableViewControllerDelegate {
+    func update(indexFolder: Int, foldersTasks: [FolderTasks], isChange: Bool) {
+        
+        self.foldersTasks = foldersTasks
+        self.isChange = isChange
+    }
+    
+    
 }

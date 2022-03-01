@@ -6,15 +6,30 @@
 //
 
 import UIKit
+protocol TasksTableViewControllerDelegate {
+    
+    func update(indexFolder: Int, foldersTasks: [FolderTasks], isChange: Bool)
+}
+
+
 
 class TasksTableViewController: UITableViewController {
     
-    var folderTasks: FolderTasks?
-    var indexFolder: Int?
+    var foldersTasks: [FolderTasks]!
+    var indexFolder: Int!
+    
+    var isChange: Bool = false {
+        didSet {
+            self.tableView.reloadData()
+            isChange = false
+            print("Didset TaskTable")
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = folderTasks?.title
+        
+        title = foldersTasks[indexFolder].title
         tableView.rowHeight = 80
         let addTaskButton = UIBarButtonItem(
                 image: UIImage(systemName: "square.and.pencil"),
@@ -22,46 +37,41 @@ class TasksTableViewController: UITableViewController {
                 target: self,
                 action: #selector(addTask))
         navigationItem.rightBarButtonItem = addTaskButton
-        
+        print("DidLoad TaskTable")
     }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+            super.viewWillTransition(to: size, with: coordinator)
+        print("WillTrans TaskTable")
 
+    }
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        folderTasks?.tasks.count ?? 0
+        foldersTasks[indexFolder].tasks.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tasksRows", for: indexPath)
 
         var content = cell.defaultContentConfiguration()
-        let tasks = folderTasks?.tasks[indexPath.row]
-        content.text = tasks?.title
-        content.secondaryText = tasks?.note
+        let tasks = foldersTasks[indexFolder].tasks[indexPath.row]
+        content.text = tasks.title
+        content.secondaryText = tasks.note
+        content.secondaryTextProperties.lineBreakMode = .byTruncatingMiddle
         cell.contentConfiguration = content
         return cell
     }
 
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        let folderTasks = folderTasks?.tasks[indexPath.row]
-        
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
-            guard let indexFolder = self.indexFolder else { return }
-            StorageManager.shared.deleteTask(indexFolder: indexFolder, indexTask: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+            self.foldersTasks[self.indexFolder].tasks.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            StorageManager.shared.save(at: self.foldersTasks)
+            
         }
-        
-        let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, isDone in
-            print("\(String(describing: folderTasks?.title))")
-
-            isDone(true)
-        }
-        
-        editAction.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
-  
-        
-        return UISwipeActionsConfiguration(actions: [editAction, deleteAction])
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
     
     
@@ -74,13 +84,12 @@ class TasksTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        guard let folderTasks = folderTasks else { return }
-        guard let indexFolder = indexFolder else { return }
-
-        let currentFolder = folderTasks.tasks.remove(at: sourceIndexPath.row)
-        folderTasks.tasks.insert(currentFolder, at: destinationIndexPath.row)
         
-   //     StorageManager.shared.moveRowFolder(folder: folderTasks, indexFolder: indexFolder)
+        let currentTask = foldersTasks[indexFolder].tasks.remove(at: sourceIndexPath.row)
+        foldersTasks[indexFolder].tasks.insert(currentTask, at: destinationIndexPath.row)
+        StorageManager.shared.moveRowTask(indexFolder: indexFolder, task: currentTask,
+                                          sourceIndex: sourceIndexPath.row, destinationIndex: destinationIndexPath.row)
+  
     }
  
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -88,29 +97,46 @@ class TasksTableViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
-   
-    
     // MARK: - Navigation
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         guard let indexPath = tableView.indexPathForSelectedRow else { return }
-        guard let taskVC = segue.destination as? AddTasksViewController else { return }
-        let task = folderTasks?.tasks[indexPath.row]
-        taskVC.task = task
-        taskVC.titleFolder = folderTasks?.title
+        guard let previewTaskVC = segue.destination as? AddTasksViewController else { return }
+        
+        previewTaskVC.delegate = self
+        previewTaskVC.mode = .preview
+        previewTaskVC.indexFolder = indexFolder
+        previewTaskVC.indexTask = indexPath.row
+        previewTaskVC.foldersTasks = foldersTasks
     }
     
     @objc func addTask() {
-        guard let folderTasks = folderTasks else { return }
+        
         let task = TaskList()
         
         let stuyryboard = UIStoryboard(name: "Main", bundle: nil)
         guard let addTaskVC = stuyryboard.instantiateViewController(withIdentifier: "AddTasksViewController") as? AddTasksViewController else { return }
-        addTaskVC.titleFolder = folderTasks.title
-        addTaskVC.task = task
+        addTaskVC.delegate = self
+        addTaskVC.mode = .edit
+        addTaskVC.indexFolder = indexFolder
+        addTaskVC.indexTask = foldersTasks[indexFolder].tasks.count
+        foldersTasks[indexFolder].tasks.append(task)
+        addTaskVC.foldersTasks = foldersTasks
+        
         present(addTaskVC, animated: true)
     }
 
 
+}
+
+extension TasksTableViewController: TasksTableViewControllerDelegate {
+    
+    func update(indexFolder: Int, foldersTasks: [FolderTasks], isChange: Bool) {
+        self.indexFolder = indexFolder
+        self.foldersTasks = foldersTasks
+        self.isChange = isChange
+    }
+    
 }

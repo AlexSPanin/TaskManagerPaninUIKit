@@ -15,43 +15,24 @@ class StorageManager {
     
     private init() {}
     
-    func save(at items: [FolderTasks]) {
-        let foldersTasks = items
+    func save(at foldersTasks: [FolderTasks]) {
+        let foldersTasks = foldersTasks
+        
         guard let data = try? JSONEncoder().encode(foldersTasks) else { return }
         userDefaults.set(data, forKey: tasksKey)
     }
     
-    func addFolder(at item: FolderTasks) {
+    func addFolder(at folderTasks: FolderTasks) {
         var foldersTasks = fetchFoldersTasks()
-        foldersTasks.append(item)
+        foldersTasks.append(folderTasks)
         
         guard let data = try? JSONEncoder().encode(foldersTasks) else { return }
         userDefaults.set(data, forKey: tasksKey)
     }
     
-    func fetchFoldersTasks() -> [FolderTasks] {
-        guard let data = userDefaults.object(forKey: tasksKey) as? Data else { return [] }
-        guard let foldersTasks = try? JSONDecoder().decode([FolderTasks].self, from: data) else { return [] }
-        
-        return foldersTasks
-    }
-    
-    func editFolder(folder: FolderTasks, indexFolder: Int, newTitle: String) {
+    func editFolder(folderTasks: FolderTasks, indexFolder: Int, newTitle: String) {
         let foldersTasks = fetchFoldersTasks()
         foldersTasks[indexFolder].title = newTitle
-        
-        guard let data = try? JSONEncoder().encode(foldersTasks) else { return }
-        userDefaults.set(data, forKey: tasksKey)
-
-        
-    }
-    
-    
-    func moveRowFolder(folder: FolderTasks, sourceIndex: Int, destinationIndex: Int) {
-        var foldersTasks = fetchFoldersTasks()
-       
-        foldersTasks.remove(at: sourceIndex)
-        foldersTasks.insert(folder, at: destinationIndex)
         
         guard let data = try? JSONEncoder().encode(foldersTasks) else { return }
         userDefaults.set(data, forKey: tasksKey)
@@ -59,8 +40,41 @@ class StorageManager {
     
     func deleteFolder(indexFolder: Int) {
         var foldersTasks = fetchFoldersTasks()
-        
         foldersTasks.remove(at: indexFolder)
+        
+        guard let data = try? JSONEncoder().encode(foldersTasks) else { return }
+        userDefaults.set(data, forKey: tasksKey)
+    }
+    
+    func moveRowFolder(folderTasks: FolderTasks, sourceIndex: Int, destinationIndex: Int) {
+        var foldersTasks = fetchFoldersTasks()
+        foldersTasks.remove(at: sourceIndex)
+        foldersTasks.insert(folderTasks, at: destinationIndex)
+        
+        guard let data = try? JSONEncoder().encode(foldersTasks) else { return }
+        userDefaults.set(data, forKey: tasksKey)
+    }
+    
+    func saveTasks(indexFolder: Int, tasks: [TaskList]) {
+        let foldersTasks = fetchFoldersTasks()
+        foldersTasks[indexFolder].tasks.removeAll()
+        foldersTasks[indexFolder].tasks = tasks
+        
+        guard let data = try? JSONEncoder().encode(foldersTasks) else { return }
+        userDefaults.set(data, forKey: tasksKey)
+    }
+    
+    func addTask(indexFolder: Int, task: TaskList) {
+        let foldersTasks = fetchFoldersTasks()
+        foldersTasks[indexFolder].tasks.append(task)
+        
+        guard let data = try? JSONEncoder().encode(foldersTasks) else { return }
+        userDefaults.set(data, forKey: tasksKey)
+    }
+    
+    func editTask(indexFolder: Int, indexTask: Int ,newTask: TaskList) {
+        let foldersTasks = fetchFoldersTasks()
+        foldersTasks[indexFolder].tasks[indexTask] = newTask
         
         guard let data = try? JSONEncoder().encode(foldersTasks) else { return }
         userDefaults.set(data, forKey: tasksKey)
@@ -72,5 +86,21 @@ class StorageManager {
         
         guard let data = try? JSONEncoder().encode(foldersTasks) else { return }
         userDefaults.set(data, forKey: tasksKey)
+    }
+    
+    func moveRowTask(indexFolder: Int, task: TaskList, sourceIndex: Int, destinationIndex: Int) {
+        let foldersTasks = fetchFoldersTasks()
+        foldersTasks[indexFolder].tasks.remove(at: sourceIndex)
+        foldersTasks[indexFolder].tasks.insert(task, at: destinationIndex)
+        
+        guard let data = try? JSONEncoder().encode(foldersTasks) else { return }
+        userDefaults.set(data, forKey: tasksKey)
+    }
+    
+    func fetchFoldersTasks() -> [FolderTasks] {
+        guard let data = userDefaults.object(forKey: tasksKey) as? Data else { return [] }
+        guard let foldersTasks = try? JSONDecoder().decode([FolderTasks].self, from: data) else { return [] }
+        
+        return foldersTasks
     }
 }

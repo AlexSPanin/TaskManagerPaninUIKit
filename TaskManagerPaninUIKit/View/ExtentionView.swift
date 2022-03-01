@@ -29,11 +29,12 @@ extension AddTasksViewController {
         changeFolderButton.addTarget(self, action: #selector(changeFolder), for: .touchDown)
         changeFolderButton.contentHorizontalAlignment = .left
         
-        let shareTaskButton = UIButton()
-        shareTaskButton.tintColor = #colorLiteral(red: 0.7254902124, green: 0.4784313738, blue: 0.09803921729, alpha: 1)
-        shareTaskButton.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
-        shareTaskButton.addTarget(self, action: #selector(shareTask), for: .touchDown)
-        shareTaskButton.contentHorizontalAlignment = .right
+        let editTaskButton = UIButton()
+        editTaskButton.tintColor = #colorLiteral(red: 0.7254902124, green: 0.4784313738, blue: 0.09803921729, alpha: 1)
+        let imageName = mode == .edit ? "square.and.pencil" : "square.text.square"
+        editTaskButton.setImage(UIImage(systemName: imageName), for: .normal)
+        editTaskButton.addTarget(self, action: #selector(editTask), for: .touchDown)
+        editTaskButton.contentHorizontalAlignment = .right
         
         let label = UILabel()
         label.textAlignment = .center
@@ -50,8 +51,8 @@ extension AddTasksViewController {
         textField.textAlignment = .natural
         textField.contentVerticalAlignment = .center
         textField.font = UIFont.systemFont(ofSize: 17)
-        textField.borderStyle = .roundedRect
-        textField.layer.borderWidth = 1
+        textField.borderStyle = .none
+        textField.layer.borderWidth = mode == .edit ? 1 : 0
         textField.layer.cornerRadius = 5
         textField.layer.borderColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
         
@@ -64,11 +65,14 @@ extension AddTasksViewController {
         textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         textView.textAlignment = .natural
         textView.font = UIFont.systemFont(ofSize: 15)
-        textView.layer.borderWidth = 1
+        textView.layer.borderWidth = mode == .edit ? 1 : 0
         textView.layer.cornerRadius = 5
-        textView.dataDetectorTypes = [.all]
         textView.layer.borderColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
+        textView.dataDetectorTypes = [.all]
         textView.allowsEditingTextAttributes = true
+        textView.keyboardDismissMode = .onDrag
+        textView.keyboardType = .twitter
+        textView.isEditable = mode == .edit
         
         noteTaskTextView = textView
         
@@ -80,7 +84,7 @@ extension AddTasksViewController {
         note.text = "Your Task"
         note.textColor = #colorLiteral(red: 0.7254902124, green: 0.4784313738, blue: 0.09803921729, alpha: 1)
         
-        let stackH = UIStackView(arrangedSubviews: [changeFolderButton, titleFolderLabel, shareTaskButton])
+        let stackH = UIStackView(arrangedSubviews: [changeFolderButton, titleFolderLabel, editTaskButton])
         
         stackH.axis = .horizontal
         stackH.spacing = 2
