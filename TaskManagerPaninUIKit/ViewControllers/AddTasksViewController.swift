@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol AddTasksViewControllerDelegate {
+    func update(indexFolder: Int, indexTask: Int, foldersTasks: [FolderTasks], isChange: Bool)
+}
+
 class AddTasksViewController: UIViewController {
     
     var delegate: TasksTableViewControllerDelegate!
@@ -15,43 +19,56 @@ class AddTasksViewController: UIViewController {
     var indexTask: Int!
     var foldersTasks: [FolderTasks]!
     
-    var isChange: Bool = false
+    var isChange: Bool = false {
+        didSet {
+            navigationItem.title = folderTasks.title
+            titleTaskTextField.text = task.title
+            noteTaskTextView.text = task.note
+        }
+    }
     
     var titleFolderLabel = UILabel()
     var titleTaskTextField = UITextField()
     var noteTaskTextView = UITextView()
     
+    var navigationBar = UINavigationBar()
+    
+    private var folderTasks: FolderTasks {
+        foldersTasks[indexFolder]
+    }
+    private var task: TaskList {
+        foldersTasks[indexFolder].tasks[indexTask]
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTexView), name:  UIResponder.keyboardDidShowNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTexView), name:  UIResponder.keyboardWillHideNotification, object: nil)
-        
-        createUI()
-        titleTaskTextField.delegate = self
         noteTaskTextView.delegate = self
         
-        titleFolderLabel.text = foldersTasks[indexFolder].title
-        titleTaskTextField.text = foldersTasks[indexFolder].tasks[indexTask].title
-        noteTaskTextView.text = foldersTasks[indexFolder].tasks[indexTask].note
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTexView),
+                                               name:  UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTexView),
+                                               name:  UIResponder.keyboardWillHideNotification, object: nil)
+        
+        createUI()
+        navigationItem.title = folderTasks.title
+        titleTaskTextField.text = task.title
+        noteTaskTextView.text = task.note
         
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        let task = foldersTasks[indexFolder].tasks[indexTask]
-        
+       
         guard let title = titleTaskTextField.text else { return }
         guard let note = noteTaskTextView.text else { return }
         
         if title.isEmpty && note.isEmpty {
-            foldersTasks[indexFolder].tasks.remove(at: indexTask)
+            folderTasks.tasks.remove(at: indexTask)
         } else {
             task.title = title
             task.note = note
             StorageManager.shared.save(at: foldersTasks)
-            isChange.toggle()
+            isChange = true
             delegate?.update(indexFolder: indexFolder, foldersTasks: foldersTasks, isChange: isChange)
         }
     }
@@ -75,26 +92,33 @@ class AddTasksViewController: UIViewController {
     }
     
     @objc func changeFolder() {
+        
+        let stuyryboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let changeFolderVC = stuyryboard.instantiateViewController(withIdentifier: "ChangeFoldersTableViewController") as? ChangeFoldersTableViewController else { return }
+        changeFolderVC.delegate = self
+        changeFolderVC.indexFolder = indexFolder
+        changeFolderVC.indexTask = indexTask
+        changeFolderVC.foldersTasks = foldersTasks
+        present(changeFolderVC, animated: true)
+        
+        navigationItem.title = "Change Folders"
         print("Change Folder")
     }
     
-    @objc func editTask(_ sender: UIButton) {
+    @objc func editTask(_ sender: UIBarButtonItem) {
         mode?.togle()
         let imageName = mode == .edit ? "square.and.pencil" : "square.text.square"
         let toValue: CGFloat = mode == .edit ? 1 : 0
     
         UIView.animate(withDuration: 1) {
-            sender.setImage(UIImage(systemName: imageName), for: .normal)
+            sender.image = UIImage(systemName: imageName)
         }
 
         noteTaskTextView.animateBorderWidth(toValue: toValue, duration: 0.5)
         titleTaskTextField.animateBorderWidth(toValue: toValue, duration: 0.5)
         
         noteTaskTextView.isEditable = mode == .edit
-        
-           
-        
-        
+        titleTaskTextField.isEnabled = mode == .edit
     }
 }
 
@@ -107,12 +131,14 @@ extension AddTasksViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         mode == .edit
     }
-    
 }
 
-extension AddTasksViewController: UITextFieldDelegate {
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        mode == .edit
+extension AddTasksViewController: AddTasksViewControllerDelegate {
+    
+    func update(indexFolder: Int, indexTask: Int, foldersTasks: [FolderTasks], isChange: Bool) {
+        self.indexFolder = indexFolder
+        self.indexTask = indexTask
+        self.foldersTasks = foldersTasks
+        self.isChange = isChange
     }
 }
-

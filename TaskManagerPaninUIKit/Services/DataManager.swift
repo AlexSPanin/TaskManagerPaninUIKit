@@ -37,7 +37,11 @@ class DataManager {
                 
             UserDefaults.standard.set(true, forKey: "Check")
             UserDefaults.standard.removeObject(forKey: "Tasks")
-            StorageManager.shared.addFolder(at: folder)
+            
+            var foldersTasks = [FolderTasks]()
+            foldersTasks.append(folder)
+            
+            StorageManager.shared.save(at: foldersTasks)
         }
     }
 }

@@ -20,6 +20,7 @@
 		E2CE6D8C27C7C61400373B7D /* TasksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D8B27C7C61400373B7D /* TasksTableViewController.swift */; };
 		E2CE6D9027C7D82800373B7D /* AddTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D8F27C7D82800373B7D /* AddTasksViewController.swift */; };
 		E2CE6D9227C7E81000373B7D /* StoradgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D9127C7E81000373B7D /* StoradgeManager.swift */; };
+		E2EB8CB627CE6407008FB627 /* ChangeFoldersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EB8CB527CE6407008FB627 /* ChangeFoldersTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		E2CE6D8B27C7C61400373B7D /* TasksTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTableViewController.swift; sourceTree = "<group>"; };
 		E2CE6D8F27C7D82800373B7D /* AddTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTasksViewController.swift; sourceTree = "<group>"; };
 		E2CE6D9127C7E81000373B7D /* StoradgeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoradgeManager.swift; sourceTree = "<group>"; };
+		E2EB8CB527CE6407008FB627 /* ChangeFoldersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeFoldersTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 				E2CE6D8B27C7C61400373B7D /* TasksTableViewController.swift */,
 				E2CE6D8F27C7D82800373B7D /* AddTasksViewController.swift */,
 				E2B9A11E27C8CB4A007B9F63 /* AlertController.swift */,
+				E2EB8CB527CE6407008FB627 /* ChangeFoldersTableViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2EB8CB627CE6407008FB627 /* ChangeFoldersTableViewController.swift in Sources */,
 				E2CE6D8C27C7C61400373B7D /* TasksTableViewController.swift in Sources */,
 				E2CE6D8827C7C55100373B7D /* MainFoldersTableViewController.swift in Sources */,
 				E2CE6D8627C7BFB800373B7D /* DataManager.swift in Sources */,

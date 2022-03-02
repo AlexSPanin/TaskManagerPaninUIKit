@@ -11,33 +11,34 @@ protocol TasksTableViewControllerDelegate {
     func update(indexFolder: Int, foldersTasks: [FolderTasks], isChange: Bool)
 }
 
-
-
 class TasksTableViewController: UITableViewController {
     
-    var foldersTasks: [FolderTasks]!
     var indexFolder: Int!
-    
+    var foldersTasks: [FolderTasks]!
     var isChange: Bool = false {
         didSet {
+            title = foldersTasks[indexFolder].title
             self.tableView.reloadData()
             isChange = false
-            print("Didset TaskTable")
         }
     }
-
+    private var rowLongPressed: Int = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+       
         title = foldersTasks[indexFolder].title
         tableView.rowHeight = 80
+        tableView.separatorColor = #colorLiteral(red: 0.5058823824, green: 0.3372549117, blue: 0.06666667014, alpha: 1)
         let addTaskButton = UIBarButtonItem(
                 image: UIImage(systemName: "square.and.pencil"),
                 style: .done,
                 target: self,
                 action: #selector(addTask))
         navigationItem.rightBarButtonItem = addTaskButton
-        print("DidLoad TaskTable")
+        
+        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(tablePressed))
+        tableView.addGestureRecognizer(recognizer)
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -69,11 +70,9 @@ class TasksTableViewController: UITableViewController {
             self.foldersTasks[self.indexFolder].tasks.remove(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
             StorageManager.shared.save(at: self.foldersTasks)
-            
         }
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
-    
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         .none
@@ -87,18 +86,16 @@ class TasksTableViewController: UITableViewController {
         
         let currentTask = foldersTasks[indexFolder].tasks.remove(at: sourceIndexPath.row)
         foldersTasks[indexFolder].tasks.insert(currentTask, at: destinationIndexPath.row)
-        StorageManager.shared.moveRowTask(indexFolder: indexFolder, task: currentTask,
-                                          sourceIndex: sourceIndexPath.row, destinationIndex: destinationIndexPath.row)
-  
-    }
- 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "editTask", sender: indexPath.row)
-        tableView.deselectRow(at: indexPath, animated: true)
+        StorageManager.shared.save(at: foldersTasks)
+        tableView.isEditing = false
     }
 
     // MARK: - Navigation
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "editTask", sender: indexPath.row)
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -127,7 +124,13 @@ class TasksTableViewController: UITableViewController {
         
         present(addTaskVC, animated: true)
     }
-
+    
+    @objc func tablePressed(_ recognizer: UILongPressGestureRecognizer) {
+        rowLongPressed += 1
+        if rowLongPressed == 1 {
+            tableView.isEditing.toggle()
+        } else { rowLongPressed = 0 }
+    }
 
 }
 

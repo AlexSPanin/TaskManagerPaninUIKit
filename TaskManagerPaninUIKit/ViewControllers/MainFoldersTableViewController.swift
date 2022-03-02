@@ -10,7 +10,6 @@ import UIKit
 class MainFoldersTableViewController: UITableViewController {
     
     var foldersTasks = [FolderTasks()]
-    
     var isChange: Bool = false {
         didSet {
             self.tableView.reloadData()
@@ -18,12 +17,18 @@ class MainFoldersTableViewController: UITableViewController {
             print("Didset TaskTable")
         }
     }
+    private var rowLongPressed: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-      
-        setupNavigationBar()
+        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(tablePressed))
+        tableView.addGestureRecognizer(recognizer)
         tableView.rowHeight = 45
+        tableView.separatorColor = #colorLiteral(red: 0.5058823824, green: 0.3372549117, blue: 0.06666667014, alpha: 1)
+        tableView.allowsSelection = true
+        
+        setupNavigationBar()
+        
         DataManager.shared.createTempData()
         foldersTasks = StorageManager.shared.fetchFoldersTasks()
         
@@ -34,19 +39,16 @@ class MainFoldersTableViewController: UITableViewController {
         tableView.reloadData()
     }
     
-
     // MARK: - Table view data source
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         foldersTasks.count
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "foldersRows", for: indexPath)
         let folder = foldersTasks[indexPath.row]
         let countTasks = folder.tasks.count
-        
-        print(countTasks)
         
         var content = cell.defaultContentConfiguration()
         content.text = folder.title
@@ -58,16 +60,13 @@ class MainFoldersTableViewController: UITableViewController {
         cell.contentConfiguration = content
         return cell
     }
-
-    
-    
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let folderTasks = foldersTasks[indexPath.row]
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
             
             self.foldersTasks.remove(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .fade)
-            StorageManager.shared.deleteFolder(indexFolder: indexPath.row)
+            StorageManager.shared.save(at: self.foldersTasks)
         }
         
         let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, isDone in
@@ -88,10 +87,16 @@ class MainFoldersTableViewController: UITableViewController {
         false
     }
     
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        true
+    }
+    
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        
         let currentFolder = foldersTasks.remove(at: sourceIndexPath.row)
         foldersTasks.insert(currentFolder, at: destinationIndexPath.row)
         StorageManager.shared.save(at: foldersTasks)
+        tableView.isEditing = false
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -99,14 +104,20 @@ class MainFoldersTableViewController: UITableViewController {
     }
     
     // MARK: - Navigation
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
         guard let indexPath = tableView.indexPathForSelectedRow else { return }
         guard let tasksVC = segue.destination as? TasksTableViewController else { return }
         setActiveFolder(indexPath.row)
         tasksVC.foldersTasks = foldersTasks
         tasksVC.indexFolder = indexPath.row
+    }
+    
+    @objc func tablePressed(_ recognizer: UILongPressGestureRecognizer) {
+        rowLongPressed += 1
+        if rowLongPressed == 1 {
+            tableView.isEditing.toggle()
+        } else { rowLongPressed = 0 }
     }
     
     @objc func addFolder() {
@@ -149,7 +160,6 @@ class MainFoldersTableViewController: UITableViewController {
             foldersTasks[0].isActive = true
         }
         StorageManager.shared.save(at: foldersTasks)
-        self.printActiveFolders()
     }
     
     
@@ -162,19 +172,19 @@ extension MainFoldersTableViewController {
         guard let navigation = navigationController else { return }
         
         let addFolderButton = UIBarButtonItem(
-                image: UIImage(systemName: "folder.badge.plus"),
-                style: .done,
-                target: self,
-                action: #selector(addFolder))
+            image: UIImage(systemName: "folder.badge.plus"),
+            style: .done,
+            target: self,
+            action: #selector(addFolder))
         
         let addTaskButton = UIBarButtonItem(
-                image: UIImage(systemName: "square.and.pencil"),
-                style: .done,
-                target: self,
-                action: #selector(addTask))
+            image: UIImage(systemName: "square.and.pencil"),
+            style: .done,
+            target: self,
+            action: #selector(addTask))
         
         title = "Folders"
-       navigation.navigationBar.prefersLargeTitles = true
+        navigation.navigationBar.prefersLargeTitles = true
         
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithOpaqueBackground()
@@ -183,33 +193,24 @@ extension MainFoldersTableViewController {
         navBarAppearance.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
         navigation.navigationBar.standardAppearance = navBarAppearance
         navigation.navigationBar.scrollEdgeAppearance = navBarAppearance
-    
+        
         navigationItem.rightBarButtonItem = addTaskButton
         navigationItem.leftBarButtonItem = addFolderButton
         navigation.navigationBar.tintColor = #colorLiteral(red: 0.5058823824, green: 0.3372549117, blue: 0.06666667014, alpha: 1)
-    
+        
     }
     
-}
-
-// MARK: -  Show Alert for add Folders
-
-extension MainFoldersTableViewController {
+    // MARK: -  Show Alert for add Folders
     
-    private func showAlert(with folderList: FolderTasks? = nil, index: Int? = nil) {
-        let title = folderList != nil ? "Edit Folder Name" : "New Folder"
+    private func showAlert(with folderTasks: FolderTasks? = nil, index: Int? = nil) {
+        let title = folderTasks != nil ? "Edit Folder Name" : "New Folder"
         let alert = UIAlertController.createAlert(withTitle: title, andMessage: "Please enter the title of the folder")
         
-        alert.action(with: folderList) { newValue in
-            if let folderList = folderList, let index = index {
-                
+        alert.action(with: folderTasks) { newValue in
+            if folderTasks != nil, let index = index {
                 self.foldersTasks[index].title = newValue
-                StorageManager.shared.editFolder(
-                    folderTasks: folderList,
-                    indexFolder: index,
-                    newTitle: newValue
-                )
-                self.foldersTasks[index].title = newValue
+                StorageManager.shared.save(at: self.foldersTasks)
+ //               self.foldersTasks[index].title = newValue
                 self.setActiveFolder(index)
                 self.tableView.reloadData()
             } else {
@@ -224,7 +225,7 @@ extension MainFoldersTableViewController {
         folderTask.title = folderTitle
         
         foldersTasks.append(folderTask)
-        StorageManager.shared.addFolder(at: folderTask)
+        StorageManager.shared.save(at: foldersTasks)
         setActiveFolder(foldersTasks.count - 1)
         tableView.reloadData()
     }
@@ -236,6 +237,4 @@ extension MainFoldersTableViewController: TasksTableViewControllerDelegate {
         self.foldersTasks = foldersTasks
         self.isChange = isChange
     }
-    
-    
 }

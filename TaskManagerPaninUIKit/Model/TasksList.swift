@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - enum for setting status edit or preview for addTasksVC
+
 enum Mode {
     case edit
     case preview

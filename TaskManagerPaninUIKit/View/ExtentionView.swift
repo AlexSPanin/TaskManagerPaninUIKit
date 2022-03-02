@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - extention for animet border style edit - preview
+
 extension UIView {
     func animateBorderWidth(toValue: CGFloat, duration: Double) {
         let animation: CABasicAnimation = CABasicAnimation(keyPath: "borderWidth")
@@ -23,28 +25,35 @@ extension UIView {
 extension AddTasksViewController {
     func createUI() {
         
-        let changeFolderButton = UIButton()
-        changeFolderButton.tintColor = #colorLiteral(red: 0.7254902124, green: 0.4784313738, blue: 0.09803921729, alpha: 1)
-        changeFolderButton.setImage(UIImage(systemName: "folder"), for: .normal)
-        changeFolderButton.addTarget(self, action: #selector(changeFolder), for: .touchDown)
-        changeFolderButton.contentHorizontalAlignment = .left
+        let changeFolderButton = UIBarButtonItem(
+            image: UIImage(systemName: "folder"),
+            style: .done,
+            target: self,
+            action: #selector(changeFolder)
+        )
+        let editTaskButton = UIBarButtonItem(
+            image: UIImage(systemName: mode == .edit ? "square.and.pencil" : "square.text.square"),
+            style: .done,
+            target: self,
+            action: #selector(editTask)
+        )
+        navigationBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 50))
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.configureWithOpaqueBackground()
+        navBarAppearance.titleTextAttributes = [.foregroundColor: #colorLiteral(red: 0.5058823824, green: 0.3372549117, blue: 0.06666667014, alpha: 1)]
+        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: #colorLiteral(red: 0.5058823824, green: 0.3372549117, blue: 0.06666667014, alpha: 1)]
+        navBarAppearance.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
+        navigationBar.standardAppearance = navBarAppearance
+        navigationBar.scrollEdgeAppearance = navBarAppearance
+        navigationBar.tintColor = #colorLiteral(red: 0.5058823824, green: 0.3372549117, blue: 0.06666667014, alpha: 1)
         
-        let editTaskButton = UIButton()
-        editTaskButton.tintColor = #colorLiteral(red: 0.7254902124, green: 0.4784313738, blue: 0.09803921729, alpha: 1)
-        let imageName = mode == .edit ? "square.and.pencil" : "square.text.square"
-        editTaskButton.setImage(UIImage(systemName: imageName), for: .normal)
-        editTaskButton.addTarget(self, action: #selector(editTask), for: .touchDown)
-        editTaskButton.contentHorizontalAlignment = .right
+        navigationItem.rightBarButtonItem = editTaskButton
+        navigationItem.leftBarButtonItem = changeFolderButton
         
-        let label = UILabel()
-        label.textAlignment = .center
-        label.lineBreakMode = .byClipping
-        label.numberOfLines = 0
+        navigationBar.items = [navigationItem]
+        self.view.addSubview(navigationBar)
         
-        titleFolderLabel = label
-        
-        titleFolderLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleFolderLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        // MARK: - create textField and TexView
         
         let textField = UITextField()
         textField.placeholder = "Enter title task"
@@ -55,6 +64,10 @@ extension AddTasksViewController {
         textField.layer.borderWidth = mode == .edit ? 1 : 0
         textField.layer.cornerRadius = 5
         textField.layer.borderColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
+        textField.clearButtonMode = .whileEditing
+        textField.becomeFirstResponder()
+        textField.autocapitalizationType = UITextAutocapitalizationType.sentences
+        textField.isEnabled = mode == .edit
         
         titleTaskTextField = textField
         
@@ -72,6 +85,7 @@ extension AddTasksViewController {
         textView.allowsEditingTextAttributes = true
         textView.keyboardDismissMode = .onDrag
         textView.keyboardType = .twitter
+        textView.autocapitalizationType = UITextAutocapitalizationType.sentences
         textView.isEditable = mode == .edit
         
         noteTaskTextView = textView
@@ -79,29 +93,23 @@ extension AddTasksViewController {
         let title = UILabel()
         title.text = "Title:"
         title.textColor = #colorLiteral(red: 0.7254902124, green: 0.4784313738, blue: 0.09803921729, alpha: 1)
+        title.font = .systemFont(ofSize: 13)
         
         let note = UILabel()
         note.text = "Your Task"
         note.textColor = #colorLiteral(red: 0.7254902124, green: 0.4784313738, blue: 0.09803921729, alpha: 1)
+        note.font = .systemFont(ofSize: 13)
         
-        let stackH = UIStackView(arrangedSubviews: [changeFolderButton, titleFolderLabel, editTaskButton])
-        
-        stackH.axis = .horizontal
-        stackH.spacing = 2
-        stackH.distribution = UIStackView.Distribution.fillEqually
-        
-        
-        
-        let stackV = UIStackView(arrangedSubviews: [stackH, title, titleTaskTextField, note, noteTaskTextView])
+        let stackV = UIStackView(arrangedSubviews: [title, titleTaskTextField, note, noteTaskTextView])
         
         stackV.axis = .vertical
-        stackV.spacing = 5
+        stackV.spacing = 2
         stackV.distribution = UIStackView.Distribution.fill
         
         view.addSubview(stackV)
         
         stackV.translatesAutoresizingMaskIntoConstraints = false
-        stackV.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
+        stackV.topAnchor.constraint(equalTo: view.topAnchor, constant: 60).isActive = true
         stackV.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         stackV.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
         stackV.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true

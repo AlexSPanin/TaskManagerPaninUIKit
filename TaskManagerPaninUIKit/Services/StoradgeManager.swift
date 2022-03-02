@@ -17,40 +17,6 @@ class StorageManager {
     
     func save(at foldersTasks: [FolderTasks]) {
         let foldersTasks = foldersTasks
-        
-        guard let data = try? JSONEncoder().encode(foldersTasks) else { return }
-        userDefaults.set(data, forKey: tasksKey)
-    }
-    
-    func addFolder(at folderTasks: FolderTasks) {
-        var foldersTasks = fetchFoldersTasks()
-        foldersTasks.append(folderTasks)
-        
-        guard let data = try? JSONEncoder().encode(foldersTasks) else { return }
-        userDefaults.set(data, forKey: tasksKey)
-    }
-    
-    func editFolder(folderTasks: FolderTasks, indexFolder: Int, newTitle: String) {
-        let foldersTasks = fetchFoldersTasks()
-        foldersTasks[indexFolder].title = newTitle
-        
-        guard let data = try? JSONEncoder().encode(foldersTasks) else { return }
-        userDefaults.set(data, forKey: tasksKey)
-    }
-    
-    func deleteFolder(indexFolder: Int) {
-        var foldersTasks = fetchFoldersTasks()
-        foldersTasks.remove(at: indexFolder)
-        
-        guard let data = try? JSONEncoder().encode(foldersTasks) else { return }
-        userDefaults.set(data, forKey: tasksKey)
-    }
-    
-    func moveRowFolder(folderTasks: FolderTasks, sourceIndex: Int, destinationIndex: Int) {
-        var foldersTasks = fetchFoldersTasks()
-        foldersTasks.remove(at: sourceIndex)
-        foldersTasks.insert(folderTasks, at: destinationIndex)
-        
         guard let data = try? JSONEncoder().encode(foldersTasks) else { return }
         userDefaults.set(data, forKey: tasksKey)
     }
