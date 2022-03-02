@@ -5,7 +5,7 @@
 //  Created by Александр Панин on 24.02.2022.
 //
 
-import Foundation
+import UIKit
 
 // MARK: - enum for setting status edit or preview for addTasksVC
 
@@ -33,6 +33,27 @@ class FolderTasks: Codable {
 class TaskList: Codable {
     var date = Date()
     var title = ""
-    var note = ""
+    var note = AttributedString(nsAttributedString: NSAttributedString(string: ""))
 }
 
+class AttributedString : Codable {
+
+    let attributedString : NSAttributedString
+
+    init(nsAttributedString : NSAttributedString) {
+        self.attributedString = nsAttributedString
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let singleContainer = try decoder.singleValueContainer()
+        guard let attributedString = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(singleContainer.decode(Data.self)) as? NSAttributedString else {
+            throw DecodingError.dataCorruptedError(in: singleContainer, debugDescription: "Data is corrupted")
+        }
+        self.attributedString = attributedString
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var singleContainer = encoder.singleValueContainer()
+        try singleContainer.encode(NSKeyedArchiver.archivedData(withRootObject: attributedString, requiringSecureCoding: false))
+    }
+}

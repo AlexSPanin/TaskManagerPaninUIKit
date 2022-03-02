@@ -14,7 +14,6 @@ class MainFoldersTableViewController: UITableViewController {
         didSet {
             self.tableView.reloadData()
             isChange = false
-            print("Didset TaskTable")
         }
     }
     private var rowLongPressed: Int = 0

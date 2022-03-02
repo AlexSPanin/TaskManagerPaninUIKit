@@ -18,10 +18,6 @@ class ChangeFoldersTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.separatorColor = #colorLiteral(red: 0.5058823824, green: 0.3372549117, blue: 0.06666667014, alpha: 1)
-        
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -31,16 +27,12 @@ class ChangeFoldersTableViewController: UITableViewController {
         delegate?.update(indexFolder: indexFolder, indexTask: indexTask, foldersTasks: foldersTasks, isChange: isChange)
     }
     
-    
-    
-    
-    
     // MARK: - Table view data source
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         foldersTasks.count
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "folders", for: indexPath)
         var content = cell.defaultContentConfiguration()
@@ -54,16 +46,14 @@ class ChangeFoldersTableViewController: UITableViewController {
         cell.contentConfiguration = content
         return cell
     }
-
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         changeFolder(indexPath.row)
         tableView.reloadData()
-        
     }
     
     override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-       true
+        true
     }
     
     private func changeFolder(_ newIndexFolder: Int) {
@@ -80,5 +70,4 @@ class ChangeFoldersTableViewController: UITableViewController {
         foldersTasks[newIndexFolder].isActive = true
         isChange = true
     }
-
 }

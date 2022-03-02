@@ -56,7 +56,7 @@ extension AddTasksViewController {
         // MARK: - create textField and TexView
         
         let textField = UITextField()
-        textField.placeholder = "Enter title task"
+        textField.placeholder = "Title for new task"
         textField.textAlignment = .natural
         textField.contentVerticalAlignment = .center
         textField.font = UIFont.systemFont(ofSize: 17)

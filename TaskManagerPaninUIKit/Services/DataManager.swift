@@ -15,10 +15,7 @@ class DataManager {
     func createTempData() {
         
         if !UserDefaults.standard.bool(forKey: "Check") {
-            
-            let task = TaskList()
-            task.title = "UITextView"
-            task.note = """
+            let note = """
             https://www.apple.com/ru/
             Overview
             UITextView supports the display of text using custom style information and also supports text editing. You typically use a text view to display multiple lines of text, such as when displaying the body of a large text document.
@@ -28,6 +25,9 @@ class DataManager {
             It is your application’s responsibility to dismiss the keyboard at the time of your choosing. You might dismiss the keyboard in response to a specific user action, such as the user tapping a particular button in your user interface. To dismiss the keyboard, send the resignFirstResponder() message to the text view that is currently the first responder. Doing so causes the text view object to end the current editing session (with the delegate object’s consent) and hide the keyboard.
             The appearance of the keyboard itself can be customized using the properties provided by the UITextInputTraits protocol. Text view objects implement this protocol and support the properties it defines. You can use these properties to specify the type of keyboard (ASCII, Numbers, URL, Email, and others) to display. You can also configure the basic text entry behavior of the keyboard, such as whether it supports automatic capitalization and correction of the text.
             """
+            let task = TaskList()
+            task.title = "UITextView"
+            task.note = AttributedString(nsAttributedString: NSAttributedString(string: note))
             
             let folder = FolderTasks()
             folder.isActive = true

@@ -23,14 +23,13 @@ class AddTasksViewController: UIViewController {
         didSet {
             navigationItem.title = folderTasks.title
             titleTaskTextField.text = task.title
-            noteTaskTextView.text = task.note
+            noteTaskTextView.attributedText = task.note.attributedString
         }
     }
     
     var titleFolderLabel = UILabel()
     var titleTaskTextField = UITextField()
     var noteTaskTextView = UITextView()
-    
     var navigationBar = UINavigationBar()
     
     private var folderTasks: FolderTasks {
@@ -52,21 +51,24 @@ class AddTasksViewController: UIViewController {
         createUI()
         navigationItem.title = folderTasks.title
         titleTaskTextField.text = task.title
-        noteTaskTextView.text = task.note
+        noteTaskTextView.attributedText = task.note.attributedString
+        
+        
         
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-       
-        guard let title = titleTaskTextField.text else { return }
-        guard let note = noteTaskTextView.text else { return }
         
-        if title.isEmpty && note.isEmpty {
+        guard let title = titleTaskTextField.text else { return }
+        guard let note = noteTaskTextView.attributedText else { return }
+  
+        
+        if title.isEmpty {
             folderTasks.tasks.remove(at: indexTask)
         } else {
             task.title = title
-            task.note = note
+            task.note = AttributedString(nsAttributedString: note)
             StorageManager.shared.save(at: foldersTasks)
             isChange = true
             delegate?.update(indexFolder: indexFolder, foldersTasks: foldersTasks, isChange: isChange)
@@ -109,11 +111,11 @@ class AddTasksViewController: UIViewController {
         mode?.togle()
         let imageName = mode == .edit ? "square.and.pencil" : "square.text.square"
         let toValue: CGFloat = mode == .edit ? 1 : 0
-    
+        
         UIView.animate(withDuration: 1) {
             sender.image = UIImage(systemName: imageName)
         }
-
+        
         noteTaskTextView.animateBorderWidth(toValue: toValue, duration: 0.5)
         titleTaskTextField.animateBorderWidth(toValue: toValue, duration: 0.5)
         
