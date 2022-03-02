@@ -1,24 +1,11 @@
 //
-//  ExtentionView.swift
+//  ExtentionAddTasksViewController.swift
 //  TaskManagerPaninUIKit
 //
-//  Created by Александр Панин on 27.02.2022.
+//  Created by Александр Панин on 02.03.2022.
 //
 
 import UIKit
-
-// MARK: - extention for animet border style edit - preview
-
-extension UIView {
-    func animateBorderWidth(toValue: CGFloat, duration: Double) {
-        let animation: CABasicAnimation = CABasicAnimation(keyPath: "borderWidth")
-        animation.fromValue = layer.borderWidth
-        animation.toValue = toValue
-        animation.duration = duration
-        layer.add(animation, forKey: "Width")
-        layer.borderWidth = toValue
-    }
-}
 
 // MARK: - Create User interface
 
@@ -59,7 +46,6 @@ extension AddTasksViewController {
         textField.placeholder = "Title for new task"
         textField.textAlignment = .natural
         textField.contentVerticalAlignment = .center
-        textField.font = UIFont.systemFont(ofSize: 17)
         textField.borderStyle = .none
         textField.layer.borderWidth = mode == .edit ? 1 : 0
         textField.layer.cornerRadius = 5
@@ -77,7 +63,6 @@ extension AddTasksViewController {
         let textView = UITextView()
         textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         textView.textAlignment = .natural
-        textView.font = UIFont.systemFont(ofSize: 15)
         textView.layer.borderWidth = mode == .edit ? 1 : 0
         textView.layer.cornerRadius = 5
         textView.layer.borderColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)

@@ -47,14 +47,12 @@ class AddTasksViewController: UIViewController {
                                                name:  UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateTexView),
                                                name:  UIResponder.keyboardWillHideNotification, object: nil)
-        
         createUI()
         navigationItem.title = folderTasks.title
         titleTaskTextField.text = task.title
+        titleTaskTextField.font = UIFont.systemFont(ofSize: 20)
         noteTaskTextView.attributedText = task.note.attributedString
-        
-        
-        
+        noteTaskTextView.font = UIFont.systemFont(ofSize: 15)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -63,7 +61,6 @@ class AddTasksViewController: UIViewController {
         guard let title = titleTaskTextField.text else { return }
         guard let note = noteTaskTextView.attributedText else { return }
   
-        
         if title.isEmpty {
             folderTasks.tasks.remove(at: indexTask)
         } else {

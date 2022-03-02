@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E256900B27CBE3B600873471 /* ExtentionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E256900A27CBE3B600873471 /* ExtentionView.swift */; };
-		E2B9A11F27C8CB4A007B9F63 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B9A11E27C8CB4A007B9F63 /* AlertController.swift */; };
+		E256900B27CBE3B600873471 /* ExtensionUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E256900A27CBE3B600873471 /* ExtensionUIView.swift */; };
+		E2B9A11F27C8CB4A007B9F63 /* ExtensionAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B9A11E27C8CB4A007B9F63 /* ExtensionAlertController.swift */; };
 		E2CE6D6327C77DC900373B7D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D6227C77DC900373B7D /* AppDelegate.swift */; };
 		E2CE6D6527C77DC900373B7D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D6427C77DC900373B7D /* SceneDelegate.swift */; };
 		E2CE6D6A27C77DC900373B7D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2CE6D6827C77DC900373B7D /* Main.storyboard */; };
@@ -21,11 +21,14 @@
 		E2CE6D9027C7D82800373B7D /* AddTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D8F27C7D82800373B7D /* AddTasksViewController.swift */; };
 		E2CE6D9227C7E81000373B7D /* StoradgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE6D9127C7E81000373B7D /* StoradgeManager.swift */; };
 		E2EB8CB627CE6407008FB627 /* ChangeFoldersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EB8CB527CE6407008FB627 /* ChangeFoldersTableViewController.swift */; };
+		E2EB8CB927CFDE90008FB627 /* ExtensionAddTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EB8CB827CFDE90008FB627 /* ExtensionAddTasksViewController.swift */; };
+		E2EB8CBB27CFDEE7008FB627 /* ExtensionNSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EB8CBA27CFDEE7008FB627 /* ExtensionNSAttributedString.swift */; };
+		E2EB8CBD27CFE079008FB627 /* ExtensionMainFoldersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EB8CBC27CFE079008FB627 /* ExtensionMainFoldersTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		E256900A27CBE3B600873471 /* ExtentionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtentionView.swift; sourceTree = "<group>"; };
-		E2B9A11E27C8CB4A007B9F63 /* AlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
+		E256900A27CBE3B600873471 /* ExtensionUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUIView.swift; sourceTree = "<group>"; };
+		E2B9A11E27C8CB4A007B9F63 /* ExtensionAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionAlertController.swift; sourceTree = "<group>"; };
 		E2CE6D5F27C77DC900373B7D /* TaskManagerPaninUIKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskManagerPaninUIKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2CE6D6227C77DC900373B7D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E2CE6D6427C77DC900373B7D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -40,6 +43,9 @@
 		E2CE6D8F27C7D82800373B7D /* AddTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTasksViewController.swift; sourceTree = "<group>"; };
 		E2CE6D9127C7E81000373B7D /* StoradgeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoradgeManager.swift; sourceTree = "<group>"; };
 		E2EB8CB527CE6407008FB627 /* ChangeFoldersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeFoldersTableViewController.swift; sourceTree = "<group>"; };
+		E2EB8CB827CFDE90008FB627 /* ExtensionAddTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionAddTasksViewController.swift; sourceTree = "<group>"; };
+		E2EB8CBA27CFDEE7008FB627 /* ExtensionNSAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionNSAttributedString.swift; sourceTree = "<group>"; };
+		E2EB8CBC27CFE079008FB627 /* ExtensionMainFoldersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionMainFoldersTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,10 +78,10 @@
 		E2CE6D6127C77DC900373B7D /* TaskManagerPaninUIKit */ = {
 			isa = PBXGroup;
 			children = (
-				E2EB8CB727CFDDFA008FB627 /* Extention */,
 				E2CE6D7627C77DD700373B7D /* ViewControllers */,
 				E2CE6D7827C77DEF00373B7D /* Services */,
 				E2CE6D8227C782DB00373B7D /* Model */,
+				E2EB8CB727CFDDFA008FB627 /* Extension */,
 				E2CE6D7B27C77E4600373B7D /* SupportingFiles */,
 				E2CE6D7A27C77E1600373B7D /* Storiboards */,
 				E2CE6D7927C77E0500373B7D /* Files */,
@@ -88,7 +94,6 @@
 			children = (
 				E2CE6D8727C7C55100373B7D /* MainFoldersTableViewController.swift */,
 				E2CE6D8B27C7C61400373B7D /* TasksTableViewController.swift */,
-				E2B9A11E27C8CB4A007B9F63 /* AlertController.swift */,
 				E2CE6D8F27C7D82800373B7D /* AddTasksViewController.swift */,
 				E2EB8CB527CE6407008FB627 /* ChangeFoldersTableViewController.swift */,
 			);
@@ -139,12 +144,16 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		E2EB8CB727CFDDFA008FB627 /* Extention */ = {
+		E2EB8CB727CFDDFA008FB627 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				E256900A27CBE3B600873471 /* ExtentionView.swift */,
+				E256900A27CBE3B600873471 /* ExtensionUIView.swift */,
+				E2EB8CBA27CFDEE7008FB627 /* ExtensionNSAttributedString.swift */,
+				E2EB8CBC27CFE079008FB627 /* ExtensionMainFoldersTableViewController.swift */,
+				E2B9A11E27C8CB4A007B9F63 /* ExtensionAlertController.swift */,
+				E2EB8CB827CFDE90008FB627 /* ExtensionAddTasksViewController.swift */,
 			);
-			path = Extention;
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -221,11 +230,14 @@
 				E2EB8CB627CE6407008FB627 /* ChangeFoldersTableViewController.swift in Sources */,
 				E2CE6D8C27C7C61400373B7D /* TasksTableViewController.swift in Sources */,
 				E2CE6D8827C7C55100373B7D /* MainFoldersTableViewController.swift in Sources */,
+				E2EB8CBD27CFE079008FB627 /* ExtensionMainFoldersTableViewController.swift in Sources */,
 				E2CE6D8627C7BFB800373B7D /* DataManager.swift in Sources */,
-				E256900B27CBE3B600873471 /* ExtentionView.swift in Sources */,
+				E2EB8CBB27CFDEE7008FB627 /* ExtensionNSAttributedString.swift in Sources */,
+				E256900B27CBE3B600873471 /* ExtensionUIView.swift in Sources */,
 				E2CE6D6327C77DC900373B7D /* AppDelegate.swift in Sources */,
 				E2CE6D8427C782F800373B7D /* TasksList.swift in Sources */,
-				E2B9A11F27C8CB4A007B9F63 /* AlertController.swift in Sources */,
+				E2B9A11F27C8CB4A007B9F63 /* ExtensionAlertController.swift in Sources */,
+				E2EB8CB927CFDE90008FB627 /* ExtensionAddTasksViewController.swift in Sources */,
 				E2CE6D6527C77DC900373B7D /* SceneDelegate.swift in Sources */,
 				E2CE6D9227C7E81000373B7D /* StoradgeManager.swift in Sources */,
 				E2CE6D9027C7D82800373B7D /* AddTasksViewController.swift in Sources */,

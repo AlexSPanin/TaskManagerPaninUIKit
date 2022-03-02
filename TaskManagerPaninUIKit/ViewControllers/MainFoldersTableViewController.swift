@@ -30,14 +30,12 @@ class MainFoldersTableViewController: UITableViewController {
         
         DataManager.shared.createTempData()
         foldersTasks = StorageManager.shared.fetchFoldersTasks()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
     }
-    
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -59,21 +57,19 @@ class MainFoldersTableViewController: UITableViewController {
         cell.contentConfiguration = content
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let folderTasks = foldersTasks[indexPath.row]
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
-            
             self.foldersTasks.remove(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .fade)
             StorageManager.shared.save(at: self.foldersTasks)
         }
-        
         let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, isDone in
             self.showAlert(with: folderTasks, index: indexPath.row)
             
             isDone(true)
         }
-        
         editAction.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
         return UISwipeActionsConfiguration(actions: [editAction, deleteAction])
     }
@@ -91,7 +87,6 @@ class MainFoldersTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        
         let currentFolder = foldersTasks.remove(at: sourceIndexPath.row)
         foldersTasks.insert(currentFolder, at: destinationIndexPath.row)
         StorageManager.shared.save(at: foldersTasks)
@@ -101,7 +96,6 @@ class MainFoldersTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -124,7 +118,6 @@ class MainFoldersTableViewController: UITableViewController {
     }
     
     @objc func addTask() {
-        
         if foldersTasks.isEmpty { showAlert() }
         guard let indexFolder = foldersTasks.firstIndex( where: \.isActive) else { return }
         let task = TaskList()
@@ -142,12 +135,6 @@ class MainFoldersTableViewController: UITableViewController {
         
     }
     
-    func printActiveFolders() {
-        for foldersTask in foldersTasks {
-            if foldersTask.isActive { print(foldersTasks.count,foldersTask.title, foldersTask.isActive)}
-        }
-    }
-    
     private func setActiveFolder(_ index: Int) {
         let foldersTasks = foldersTasks
         if foldersTasks.contains(where: { folder in folder.isActive }) {
@@ -160,45 +147,6 @@ class MainFoldersTableViewController: UITableViewController {
         }
         StorageManager.shared.save(at: foldersTasks)
     }
-    
-    
-}
-// MARK: - Create Bar Buttons
-
-extension MainFoldersTableViewController {
-    
-    private func setupNavigationBar() {
-        guard let navigation = navigationController else { return }
-        
-        let addFolderButton = UIBarButtonItem(
-            image: UIImage(systemName: "folder.badge.plus"),
-            style: .done,
-            target: self,
-            action: #selector(addFolder))
-        
-        let addTaskButton = UIBarButtonItem(
-            image: UIImage(systemName: "square.and.pencil"),
-            style: .done,
-            target: self,
-            action: #selector(addTask))
-        
-        title = "Folders"
-        navigation.navigationBar.prefersLargeTitles = true
-        
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.configureWithOpaqueBackground()
-        navBarAppearance.titleTextAttributes = [.foregroundColor: #colorLiteral(red: 0.5058823824, green: 0.3372549117, blue: 0.06666667014, alpha: 1)]
-        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: #colorLiteral(red: 0.5058823824, green: 0.3372549117, blue: 0.06666667014, alpha: 1)]
-        navBarAppearance.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
-        navigation.navigationBar.standardAppearance = navBarAppearance
-        navigation.navigationBar.scrollEdgeAppearance = navBarAppearance
-        
-        navigationItem.rightBarButtonItem = addTaskButton
-        navigationItem.leftBarButtonItem = addFolderButton
-        navigation.navigationBar.tintColor = #colorLiteral(red: 0.5058823824, green: 0.3372549117, blue: 0.06666667014, alpha: 1)
-        
-    }
-    
     // MARK: -  Show Alert for add Folders
     
     private func showAlert(with folderTasks: FolderTasks? = nil, index: Int? = nil) {
@@ -209,7 +157,6 @@ extension MainFoldersTableViewController {
             if folderTasks != nil, let index = index {
                 self.foldersTasks[index].title = newValue
                 StorageManager.shared.save(at: self.foldersTasks)
- //               self.foldersTasks[index].title = newValue
                 self.setActiveFolder(index)
                 self.tableView.reloadData()
             } else {

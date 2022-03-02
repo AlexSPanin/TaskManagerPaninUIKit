@@ -1,9 +1,8 @@
 //
-//  AlertController.swift
-//  RealmApp
+// ExtensionAlertController.swift
+//  TaskManagerPaninUIKit
 //
-//  Created by Alexey Efimov on 12.03.2020.
-//  Copyright © 2020 Alexey Efimov. All rights reserved.
+//  Created by Александр Панин on 24.02.2022.
 //
 
 import UIKit
