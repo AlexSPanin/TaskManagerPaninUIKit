@@ -101,7 +101,6 @@ class AddTasksViewController: UIViewController {
         present(changeFolderVC, animated: true)
         
         navigationItem.title = "Change Folders"
-        print("Change Folder")
     }
     
     @objc func editTask(_ sender: UIBarButtonItem) {
